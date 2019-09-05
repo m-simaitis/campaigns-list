@@ -1,0 +1,25 @@
+$red: #dc3545;
+$green: #28a745;
+
+.campaignStatus {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: $green;
+
+  &--disabled {
+    background: $red;
+  }
+}
+
+.ReactTable {
+  .rt-thead.-header {
+    font-weight: bold;
+  }
+}
