@@ -11,4 +11,5 @@ const ErrorHandler = props => {
         </Alert>
     )
 };
+
 export default ErrorHandler

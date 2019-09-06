@@ -3,10 +3,10 @@ import CampaignsList from './components/CampaignsList/CampaignsList';
 import Loader from './components/Loader/Loader';
 import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import campaigns from './files/campaigns';
-import Container from 'react-bootstrap/Container'
+import Container from 'react-bootstrap/Container';
+import axios from 'axios'
 import './App.scss'
 
-const axios = require('axios');
 const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
 const transformData = (data) => {
