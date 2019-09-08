@@ -52,7 +52,6 @@ const CampaignsList = props => {
     />
 };
 
-
 export default CampaignsList
 
 

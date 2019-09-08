@@ -4,9 +4,8 @@ import Loader from './components/Loader/Loader';
 import ErrorHandler from './components/ErrorHandler/ErrorHandler';
 import {Campaigns, ApiUrl} from './Constants';
 import Container from 'react-bootstrap/Container';
+import axios from 'axios';
 import './App.scss';
-
-const axios = require('axios');
 
 const transformData = (data) => {
     return Campaigns.filter((item) => {
