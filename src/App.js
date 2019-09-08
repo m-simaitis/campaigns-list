@@ -2,34 +2,29 @@ import React, {useEffect, useState} from 'react';
 import CampaignsList from './components/CampaignsList/CampaignsList';
 import Loader from './components/Loader/Loader';
 import ErrorHandler from './components/ErrorHandler/ErrorHandler';
-import campaigns from './files/campaigns';
-import Container from 'react-bootstrap/Container'
-import './App.scss'
+import {Campaigns, ApiUrl} from './Constants';
+import Container from 'react-bootstrap/Container';
+import './App.scss';
 
 const axios = require('axios');
-const apiUrl = 'https://jsonplaceholder.typicode.com/users';
 
 const transformData = (data) => {
-    return campaigns.filter((item) => {
-        let startDate = Date.parse(item.startDate);
-        let endDate = Date.parse(item.endDate);
-        let currentDate = new Date().getTime();
-
-        item.budgetInUSD = Math.round(item.Budget / 1000) + 'k USD';
-        startDate < currentDate && currentDate < endDate ? item.activeStatus = true : item.activeStatus = false;
-        return endDate > startDate;
-
+    return Campaigns.filter((item) => {
+        return Date.parse(item.endDate) > Date.parse(item.startDate);
     }).map((item) => {
+        const currentDate = new Date().getTime();
         const match = data.find(e => e.id === item.userId);
+        const username = match ? match.username : 'No User Name';
+        const budgetInUSD = Math.round(item.Budget / 1000) + 'k USD';
+        const activeStatus = Date.parse(item.startDate) < currentDate && currentDate < Date.parse(item.endDate);
 
-        match ? item.username = match.username : item.username = 'No User Name';
-        return item;
+        return {...item, username, budgetInUSD, activeStatus};
     });
 };
 
 const getData = () => {
     return new Promise((resolve, reject) => {
-        axios.get(apiUrl)
+        axios.get(ApiUrl)
              .then((response) => {
                  resolve(transformData(response.data));
              })
@@ -40,14 +35,12 @@ const getData = () => {
 };
 
 const List = () => {
-    const [status, setStatus] = useState('LOADING');
     const [campaigns, setCampaigns] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         getData().then((data) => {
             setCampaigns(data);
-            setStatus('DONE');
         }).catch((err) => {
             setError(err);
         });
@@ -56,8 +49,8 @@ const List = () => {
     return (
         <Container>
             {error ?
-                <ErrorHandler message={error}/> : status === 'LOADING' ?
-                    <Loader/> : <CampaignsList campaigns={campaigns}/>
+                <ErrorHandler message={error}/> :
+                campaigns ? <CampaignsList campaigns={campaigns}/> : <Loader/>
             }
         </Container>
     );
